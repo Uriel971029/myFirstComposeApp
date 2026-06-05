@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,10 +48,20 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
        pokemonList.value = RetrofitClient.apiService.getPokemonList()
         Log.d("info", pokemonList.toString())
     }
-    Text(
-        text = "$pokemonList",
+    MyPokemonListComposeView(
+        pokemonList = pokemonList.value.results,
         modifier = modifier
     )
+}
+
+
+@Composable
+fun MyPokemonListComposeView(pokemonList: List<PokemonResponse>, modifier: Modifier) {
+    LazyColumn(modifier = modifier) {
+        items(items = pokemonList) { pokemon ->
+            Text(text = pokemon.name)
+        }
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true, backgroundColor = 0xFFFFFF)
